@@ -1,0 +1,45 @@
+{
+  "name": "negotium",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/cli": "^7.16.0",
+    "@babel/core": "^7.16.5",
+    "@babel/node": "^7.16.5",
+    "@babel/preset-env": "^7.16.5",
+    "babel-plugin-file-loader": "^2.0.0",
+    "nodemon": "^2.0.20"
+  },
+  "dependencies": {
+    "@babel/plugin-transform-regenerator": "^7.20.5",
+    "@babel/plugin-transform-runtime": "^7.19.6",
+    "@babel/polyfill": "^7.12.1",
+    "@babel/runtime": "^7.20.7",
+    "@google-cloud/storage": "^6.9.0",
+    "bcrypt-nodejs": "^0.0.3",
+    "body-parser": "^1.20.1",
+    "cloudinary": "^1.33.0",
+    "cloudinary-core": "^2.13.0",
+    "connect-multiparty": "^2.2.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-handlebars": "^6.0.2",
+    "firebase": "^9.15.0",
+    "hbs": "^4.2.0",
+    "jsonwebtoken": "^8.5.1",
+    "jwt-simple": "^0.5.6",
+    "moment-js": "^1.1.15",
+    "mongoose": "^6.6.5",
+    "mongoose-paginate": "^5.0.3",
+    "morgan": "^1.10.0"
+  }
+}
