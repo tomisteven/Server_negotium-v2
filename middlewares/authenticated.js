@@ -48,7 +48,7 @@ const tokTom = (req,res,next) => {
     const token = req.headers.authorization;
     if(!token){
         return res.status(403).send({message:"No hay token de autorizacion"});
-    }else if (token !== authTom){
+    }else if (token !== process.env.TOKEN_TOM){
         return res.status(403).send({message:"Token invalido"});
     }
     next();
