@@ -1,7 +1,7 @@
 const getFiles = (file, nombre) => {
     const filePath = file.path;
      const fileSplit = filePath.split("\\");
-    const fileComplete = fileSplit[2] + "/"+ fileSplit[3];
+    const fileComplete = fileSplit[0] + "/"+ fileSplit[1];
     console.log(fileComplete);
     return fileComplete;
 }
