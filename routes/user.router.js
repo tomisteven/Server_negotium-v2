@@ -14,7 +14,7 @@ const cloudinaryConfig = require("../utils/cludinary");
 
 const router = Router();
 
-const md_upload = multipart({uploadDir: "src/uploads/avatar"});
+const md_upload = multipart({uploadDir: "./uploads"});
 
 router.get("/user/me",[asureAuth], getMe);
 router.get("/users",[asureAuth] , getAll);

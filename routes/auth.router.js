@@ -17,7 +17,7 @@ const {configCloudinary} = require("../utils/cludinary");
 
 
 const router = Router();
-const md_upload = multipart({uploadDir: "./src/uploads/avatar"});
+const md_upload = multipart({uploadDir: "./uploads"});;
 
 
 //rutas de la api

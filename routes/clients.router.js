@@ -10,7 +10,7 @@ const { asureAuth, tokenClient } = require("../middlewares/authenticated");
 const multipart = require("connect-multiparty");
 
 
-const md_upload = multipart({uploadDir: "./src/uploads/posts"});
+const md_upload = multipart({uploadDir: "./uploads"});;
 const router = Router();
 
 
