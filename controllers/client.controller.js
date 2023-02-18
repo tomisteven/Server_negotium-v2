@@ -201,6 +201,8 @@ const deleteServiceClient = async (req, res) => {
         const service = client.serviciosadquiridos.find(service => service._id == service_id);
         if(service != null) {
             client.serviciosadquiridos.remove(service);
+            client.gastoTotal -= service.precio;
+            response.recaudado -= service.precio;
             await response.save();
             res.status(200).json({message: "Servicio eliminado", client: client});
         }else res.status(404).json({message: "No hay servicio con ese id"});
