@@ -139,13 +139,17 @@ const addService = async (req, res) => {
     const client = response.clientes.find(client => client._id == client_id);
     if(!client) res.status(404).json({message: "No hay cliente con ese id"});
     client.serviciosadquiridos.push(req.body);
+    //console.log(response);
     if(!req.body.precio){
         res.status(400).json({message: "El precio es obligatorio"});
     }
     else{
         client.gastoTotal += req.body.precio;
+        response.recaudado += req.body.precio;
+        //console.log(response.recaudado, client.gastoTotal);
     }
     await response.save();
+
     res.status(200).json({message: "Servicio añadido", client: client});
 }
 

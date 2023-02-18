@@ -15,6 +15,10 @@ const UserSchema = new Schema({
     membresia: Boolean,
     avatar: String,
     url_login: String,
+    recaudado: {
+        type: Number,
+        default: 0
+    },
     clientes: [
         {
         username: String,
