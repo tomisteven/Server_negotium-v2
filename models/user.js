@@ -12,10 +12,15 @@ const UserSchema = new Schema({
     },
     password: String,
     role : String,
+    genero : String,
     membresia: Boolean,
     avatar: String,
     url_login: String,
     recaudado: {
+        type: Number,
+        default: 0
+    },
+    totalServiciosUsados: {
         type: Number,
         default: 0
     },
