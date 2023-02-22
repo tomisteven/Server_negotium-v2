@@ -20,6 +20,7 @@ const createClient = async (req, res) => {
     if(client){
         res.status(400).json({message: "El cliente con ese EMAIL ya existe"});
     }else{
+        /* coomit */
         response.clientes.push(req.body);
         await response.save();
         res.status(200).json({message: "Cliente creado", client: req.body});
