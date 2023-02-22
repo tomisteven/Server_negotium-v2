@@ -172,6 +172,7 @@ const updateClient = async (req, res) => {
         client.direccion = req.body.direccion || client.direccion;
         client.gastoTotal = req.body.gastoTotal || client.gastoTotal;
         client.serviciosadquiridos = req.body.serviciosadquiridos || client.serviciosadquiridos;
+        client.genero = req.body.genero || client.genero;
         await response.save();
         res.status(200).json({message: "Cliente actualizado", client: client});
     }
