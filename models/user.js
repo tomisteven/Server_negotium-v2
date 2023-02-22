@@ -88,10 +88,17 @@ const UserSchema = new Schema({
         nombre: String,
         precio: Number,
         cantidadVendidos: Number,
+        clientes: Number,
         cantidadDisponibles: Number,
         descripcion: String,
         imagen: String,
-        fecha: Date
+        fecha: Date,
+        habilitado: {
+            type: Boolean,
+            default: true
+        }
+
+
     }],
     pdfs: [{
         nombre: String,
