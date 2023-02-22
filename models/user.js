@@ -12,7 +12,7 @@ const UserSchema = new Schema({
     },
     password: String,
     role : String,
-    genero : String,
+
     membresia: Boolean,
     avatar: String,
     url_login: String,
@@ -26,6 +26,10 @@ const UserSchema = new Schema({
     },
     clientes: [
         {
+        genero : {
+            type: String,
+            default: "Masculino"
+        },
         username: String,
         password: {
             type: String,
