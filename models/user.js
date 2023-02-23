@@ -88,7 +88,10 @@ const UserSchema = new Schema({
         nombre: String,
         precio: Number,
         cantidadVendidos: Number,
-        clientes: Number,
+        clientes: {
+            type: Number,
+            default: 0
+        },
         cantidadDisponibles: Number,
         descripcion: String,
         imagen: String,
