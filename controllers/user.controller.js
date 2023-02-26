@@ -107,9 +107,9 @@ const updateUser = async (req, res) => {
         //si el usuario envia una nueva imagen
         if(req.files.avatar){
             const imagePath = getFiles(req.files.avatar);
-            console.log(imagePath);
+            /* console.log(imagePath);
             console.log(USER.email);
-            console.log(req.files.avatar);
+            console.log(req.files.avatar); */
              await cloudinary.v2.uploader.destroy(USER.email, (err, result) => {
                 if(err){
                     res.status(500).send({message: "Error al eliminar la imagen de cloudinary"});
@@ -143,6 +143,24 @@ const updateUser = async (req, res) => {
             }
         })
     }
+}
+
+const updateUserGeneral = async (req, res) => {
+
+   const {user_id} = req.user
+    const userData = req.body
+    await User.findByIdAndUpdate({_id: user_id}, userData, (err, userUpdate) => {
+        if(err){
+            res.status(500).send({message: "Error al actualizar el usuario"});
+        }else{
+            if(!userUpdate){
+                res.status(404).send({message: "No se ha encontrado el usuario"});
+            }else{
+                res.status(200).send({message: "Usuario actualizado correctamente", user: userUpdate});
+            }
+        }
+    })
+
 }
 
 const deleteUser = async (req, res) => {
@@ -187,7 +205,8 @@ module.exports = {
     getAll,
     getMembresiaActive,
     getMembresiaInactive,
-    createUrlLogin
+    createUrlLogin,
+    updateUserGeneral
 }
 
 

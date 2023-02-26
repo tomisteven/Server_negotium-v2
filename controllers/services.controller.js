@@ -64,6 +64,22 @@ const deleteService = async (req, res) => {
 }
 
 
+const toggleService = async (req, res) => {
+    const {user_id} = req.user;
+    const id = req.params.id
+
+    const resp = await User.findById(user_id)
+    const services = resp.servicios
+    const res2 = services.filter((service) => {
+        return service._id == id
+    })
+    const res3 = res2[0]
+    res3.habilitado= !res3.habilitado
+    const result = await resp.save()
+    result ? res.status(200).json(result) : res.status(404).json({message: "No es un id Valido"});
+
+}
+
 
 
 module.exports = {
@@ -71,5 +87,5 @@ module.exports = {
      createService,
      itemService,
         deleteService,
-
+        toggleService
 }
