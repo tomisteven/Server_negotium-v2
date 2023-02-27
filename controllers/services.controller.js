@@ -103,8 +103,7 @@ const updateService = async (req, res) => {
   service.nombre = form.nombre || service.nombre;
   service.precio = form.precio || service.precio;
   service.cantidadVendidos = form.cantidadVendidos || service.cantidadVendidos;
-  service.cantidadDisponibles =
-    form.cantidadDisponibles || service.cantidadDisponibles;
+  service.cantidadDisponibles = form.cantidadDisponibles || service.cantidadDisponibles;
   service.descripcion = form.descripcion || service.descripcion;
   service.habilitado = form.habilitado || service.habilitado;
   service.clientes = form.clientes || service.clientes;

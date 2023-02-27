@@ -7,6 +7,23 @@
 const User = require('../models/user.js');
 
 
+const toggleRecordatorio = async (req, res) => {
+    const { user_id } = req.user;
+    const id = req.params.id;
+  
+    const resp = await User.findById(user_id);
+    const recordatorio = resp.recordatorios;
+    const res2 = recordatorio.filter((r) => {
+      return r._id == id;
+    });
+    const res3 = res2[0];
+    res3.completed = !res3.completed;
+    const result = await resp.save();
+    result
+      ? res.status(200).json(result)
+      : res.status(404).json({ message: "No es un id Valido" });
+  };
+
 const getRecordatorios = async (req, res) => {
     const {user_id} = req.user
     const response = await User.findById(user_id)
@@ -62,5 +79,6 @@ module.exports = {
     getRecordatorios,
     createRecordatorio,
     updateRecordatorio,
-    deleteRecordatorio
+    deleteRecordatorio,
+    toggleRecordatorio
 }
