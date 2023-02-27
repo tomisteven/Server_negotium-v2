@@ -3,7 +3,7 @@ import {itemService, getServices, createService, deleteService} from "../control
 import { asureAuth } from "../middlewares/authenticated"; */
 
 const { Router } = require('express');
-const {itemService, getServices, createService, deleteService, toggleService} = require('../controllers/services.controller');
+const {itemService, getServices, createService, deleteService, toggleService, updateService} = require('../controllers/services.controller');
 const { asureAuth } = require('../middlewares/authenticated');
 
 
@@ -14,6 +14,7 @@ router.get("/", [asureAuth], getServices);
 router.get("/items", asureAuth, itemService);
 
 router.patch("/toggle/:id", asureAuth, toggleService);
+router.patch("/update/:id", asureAuth, updateService);
 
 router.post("/create", asureAuth, createService);
 
