@@ -50,9 +50,9 @@ const getClientConDeuda = async (req, res) => {
         res.status(200).json(clientsConDeuda);
     }
     else {
-        res.status(404).json({message: "No hay clientes con deudas"});
+        res.status(404).json(clientsConDeuda);
     }
-    console.log(clientsConDeuda);
+    //console.log(clientsConDeuda);
 }
 
 const clientesConDeudaItem = async (req, res) => {
@@ -98,7 +98,7 @@ const getClientSinDeuda = async (req, res) => {
     if(!response) res.status(404).json({message: "No hay cliente con ese id"});
     const clientSinDeuda = response.clientes.filter(client => client.deuda == false);
     if(clientSinDeuda != null && clientSinDeuda.length > 0) res.status(200).json(clientSinDeuda);
-    else res.status(404).json({message: "No hay clientes con deudas"});
+    else res.status(404).json(clientSinDeuda);
 
 }
 
