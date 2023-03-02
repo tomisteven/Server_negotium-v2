@@ -5,7 +5,7 @@ import { asureAuth, tokenClient } from "../middlewares/authenticated";
 import multipart from "connect-multiparty"; */
 
 const Router = require("express");
-const {getAllClients, getClientConDeuda, getClientSinDeuda,createClient, getServicesOfClient, getClient, addServiceFuture,updateClient, deleteClient, deleteServiceClient, addService,deleteServiceFutureClient, updateUsernamePassword, loginClient, getServicesFuturesOfClient, urlLoginClient, clientesConDeudaItem, clientesSinDeudaItem } = require("../controllers/client.controller");
+const {getAllClients, getClientConDeuda, getClientSinDeuda,createClient, getServicesOfClient, getClient, addServiceFuture,updateClient, deleteClient, deleteServiceClient, addService,deleteServiceFutureClient, updateUsernamePassword, loginClient, getServicesFuturesOfClient, urlLoginClient, clientesConDeudaItem, clientesSinDeudaItem, getClientX } = require("../controllers/client.controller");
 const { asureAuth, tokenClient } = require("../middlewares/authenticated");
 const multipart = require("connect-multiparty");
 
@@ -32,6 +32,7 @@ router.get("/futureservices/:id", [asureAuth], getServicesFuturesOfClient); //ht
 router.get("/url/get", [asureAuth], urlLoginClient)
 router.get("/item/deudores", [asureAuth], clientesConDeudaItem)
 router.get("/item/nodeudores", [asureAuth], clientesSinDeudaItem)
+router.get("/genero/x", [asureAuth], getClientX)
 
 router.delete("/delete/:id", [asureAuth], deleteClient); //http://localhost:3000/client/delete/5f9f1b0b0b9b2c1e1c8c1b5a
 router.delete("/delete/service/:id/:service_id", [asureAuth], deleteServiceClient); //http://localhost:3000/client/delete/service/5f9f1b0b0b9b2c1e1c8c1b5a/5f9f1b0b0b9b2c1e1c8c1b5a

@@ -41,6 +41,21 @@ const getAllClients = async (req, res) => {
     }
 }
 
+const getClientX = async (req, res) => {
+    const {user_id} = req.user;
+    const {genero} = req.query;
+    const user = await User.findById(user_id);
+
+    //console.log(genero);
+     const clients = user.clientes;
+    if (clients != null && clients.length > 0) {
+        const clientsX = clients.filter(client => client.genero == genero);
+        res.status(200).json(clientsX);
+    }else{
+        res.status(404).json([]);
+    }
+}
+
 const getClientConDeuda = async (req, res) => {
     const {user_id} = req.user;
     const response = await User.findById(user_id);
@@ -297,4 +312,5 @@ module.exports = {
     getServicesFuturesOfClient,
     clientesConDeudaItem,
     clientesSinDeudaItem,
+    getClientX
 }
