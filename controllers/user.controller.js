@@ -145,23 +145,30 @@ const updateUser = async (req, res) => {
     }
 }
 
-const updateUserGeneral = async (req, res) => {
+const updateMembresia = async (req, res) => {
 
    const {user_id} = req.user
-    const userData = req.body
-    await User.findByIdAndUpdate({_id: user_id}, userData, (err, userUpdate) => {
+    const UserData = req.body
+
+    User.findOneAndUpdate({_id: user_id}, UserData, (err, userUpdate) => {
         if(err){
             res.status(500).send({message: "Error al actualizar el usuario"});
         }else{
             if(!userUpdate){
                 res.status(404).send({message: "No se ha encontrado el usuario"});
             }else{
+
                 res.status(200).send({message: "Usuario actualizado correctamente", user: userUpdate});
             }
         }
     })
 
+
+
 }
+
+
+
 
 const deleteUser = async (req, res) => {
     const {id} = req.params
@@ -206,7 +213,7 @@ module.exports = {
     getMembresiaActive,
     getMembresiaInactive,
     createUrlLogin,
-    updateUserGeneral
+    updateUserGeneral: updateMembresia
 }
 
 
