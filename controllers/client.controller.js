@@ -10,7 +10,36 @@ const {
     getFiles
 } = require("../utils/images");
 
+const addDeuda = async (req, res) => {
+    const {user_id} = req.user;
+    const {id}  = req.params;
+    const response = await User.findById(user_id);
+    const {deuda} = req.body;
+    const client = response.clientes.find(client => client._id == id);
+    //console.log(client);
+     if(!client){
+        res.status(400).json({message: "El cliente no existe"});
+    }
+    client.deudaTotal += deuda;
+    client.deuda = true;
+    await response.save();
+    res.status(200).json({cliente: client});
+}
 
+const deleteDeuda = async (req, res) => {
+    const {user_id} = req.user;
+    const {id}  = req.params;
+    const response = await User.findById(user_id);
+    const client = response.clientes.find(client => client._id == id);
+    //console.log(client);
+     if(!client){
+        res.status(400).json({message: "El cliente no existe"});
+    }
+    client.deudaTotal = 0;
+    client.deuda = false;
+    await response.save();
+    res.status(200).json({cliente: client});
+}
 
 const createClient = async (req, res) => {
     const {user_id} = req.user;
@@ -312,5 +341,7 @@ module.exports = {
     getServicesFuturesOfClient,
     clientesConDeudaItem,
     clientesSinDeudaItem,
-    getClientX
+    getClientX,
+    addDeuda,
+    deleteDeuda,
 }

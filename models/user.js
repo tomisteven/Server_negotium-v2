@@ -20,6 +20,10 @@ const UserSchema = new Schema({
         type: Number,
         default: 0
     },
+    deudas: {
+        type: Number,
+        default: 0
+    },
     totalServiciosUsados: {
         type: Number,
         default: 0

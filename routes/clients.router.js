@@ -5,7 +5,7 @@ import { asureAuth, tokenClient } from "../middlewares/authenticated";
 import multipart from "connect-multiparty"; */
 
 const Router = require("express");
-const {getAllClients, getClientConDeuda, getClientSinDeuda,createClient, getServicesOfClient, getClient, addServiceFuture,updateClient, deleteClient, deleteServiceClient, addService,deleteServiceFutureClient, updateUsernamePassword, loginClient, getServicesFuturesOfClient, urlLoginClient, clientesConDeudaItem, clientesSinDeudaItem, getClientX } = require("../controllers/client.controller");
+const {getAllClients, getClientConDeuda, getClientSinDeuda,createClient, getServicesOfClient, getClient, addServiceFuture,updateClient, deleteClient, deleteServiceClient, addService,deleteServiceFutureClient, updateUsernamePassword, loginClient, getServicesFuturesOfClient, urlLoginClient, clientesConDeudaItem, clientesSinDeudaItem, getClientX, addDeuda, deleteDeuda } = require("../controllers/client.controller");
 const { asureAuth, tokenClient } = require("../middlewares/authenticated");
 const multipart = require("connect-multiparty");
 
@@ -18,6 +18,8 @@ router.post("/create", [asureAuth], createClient); //http://localhost:3000/clien
 router.post("/create/futureservice/:id", asureAuth, addServiceFuture); //http://localhost:3000/client/create/futureservice/5f9f1b0b0b9b2c1e1c8c1b5a
 router.post("/create/service/:id", [asureAuth], addService); //http://localhost:3000/client/create/service/5f9f1b0b0b9b2c1e1c8c1b5a
 router.post("/login/:id", loginClient); //http://localhost:3000/client/login
+router.patch("/create/deuda/:id", [asureAuth], addDeuda); //http://localhost:3000/client/create/deuda/5f9f1b0b0b9b2c1e1c8c1b5a
+router.patch("/delete/deuda/:id", [asureAuth], deleteDeuda); //http://localhost:3000/client/delete/deuda/5f9f1b0b0b9b2c1e1c8c1b5a
 
 
 router.patch("/update/:id", [asureAuth], updateClient); //http://localhost:3000/client/update/5f9f1b0b0b9b2c1e1c8c1b5a
