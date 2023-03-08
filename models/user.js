@@ -69,12 +69,16 @@ const UserSchema = new Schema({
             fecha: {
                 type: Date,
                 default: Date.now()
-            }
+            },
+            completed: {
+                type: Boolean,
+                default: true
+            },
         }],
         nextServices: [{
-            service: String,
+            nombre: String,
             fecha : {
-                type: String || Date,
+                type: Date,
                 default: Date.now()
             },
             completed: {
@@ -83,8 +87,7 @@ const UserSchema = new Schema({
             },
             hora: {
                 type: String,
-                default: "00:00"
-
+                default: ""
             }
         }],
     }],

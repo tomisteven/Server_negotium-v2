@@ -20,6 +20,7 @@ const addDeuda = async (req, res) => {
      if(!client){
         res.status(400).json({message: "El cliente no existe"});
     }
+    response.deudas += deuda;
     client.deudaTotal += deuda;
     client.deuda = true;
     await response.save();
@@ -29,14 +30,22 @@ const addDeuda = async (req, res) => {
 const deleteDeuda = async (req, res) => {
     const {user_id} = req.user;
     const {id}  = req.params;
+    const {deuda} = req.body;
     const response = await User.findById(user_id);
     const client = response.clientes.find(client => client._id == id);
     //console.log(client);
      if(!client){
         res.status(400).json({message: "El cliente no existe"});
     }
-    client.deudaTotal = 0;
-    client.deuda = false;
+    if(deuda) {
+        response.deudas -= deuda;
+        client.deudaTotal -= deuda;
+        if(client.deudaTotal == 0) client.deuda = false;
+    }else{
+        response.deudas -= client.deudaTotal;
+        client.deudaTotal = 0;
+        client.deuda = false;
+    }
     await response.save();
     res.status(200).json({cliente: client});
 }
@@ -49,7 +58,8 @@ const createClient = async (req, res) => {
     if(client){
         res.status(400).json({message: "El cliente con ese EMAIL ya existe"});
     }else{
-        /* coomit */
+        response.recaudado += req.body.gastoTotal;
+        response.deudas += req.body.deudaTotal;
         response.clientes.push(req.body);
         await response.save();
         res.status(200).json({message: "Cliente creado", client: req.body});
@@ -165,6 +175,23 @@ const getClient = async (req, res) => {
     if(client != null) res.status(200).json(client);
     else res.status(404).json({message: "No hay cliente con ese id"});
 }
+
+const completeServiceFuture = async (req, res) => {
+    const client_id = req.params.id;
+    const service_id = req.params.id_service;
+    const {user_id} = req.user;
+
+    const user = await User.findById(user_id);
+    const client = user.clientes.find(client => client._id == client_id);
+    const service = client.nextServices.find(service => service._id == service_id);
+    if(!service) res.status(404).json({message: "No hay servicio con ese id"});
+    service.complete = true;
+    client.serviciosadquiridos.push(service);
+    client.nextServices = client.nextServices.filter(service => service._id != service_id);
+    await user.save();
+    res.status(200).json({message: "Servicio completado", client: client.serviciosadquiridos});
+}
+
 
 const addServiceFuture = async (req, res) => {
     const client_id = req.params.id;
@@ -344,4 +371,5 @@ module.exports = {
     getClientX,
     addDeuda,
     deleteDeuda,
+    completeServiceFuture
 }
