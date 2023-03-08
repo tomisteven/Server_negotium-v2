@@ -77,6 +77,7 @@ const UserSchema = new Schema({
         }],
         nextServices: [{
             nombre: String,
+            precio: Number,
             fecha : {
                 type: Date,
                 default: Date.now()
@@ -85,10 +86,6 @@ const UserSchema = new Schema({
                 type: Boolean,
                 default: false
             },
-            hora: {
-                type: String,
-                default: ""
-            }
         }],
     }],
     servicios: [{
