@@ -37,15 +37,10 @@ const deleteDeuda = async (req, res) => {
      if(!client){
         res.status(400).json({message: "El cliente no existe"});
     }
-    if(deuda) {
-        resta ? response.deudas -= deuda : response.deudas += deuda;
-        resta ? client.deudaTotal -= deuda : client.deudaTotal += deuda;
-        if(client.deudaTotal == 0) client.deuda = false;
-    }else{
-        response.deudas -= client.deudaTotal;
-        client.deudaTotal = 0;
-        client.deuda = false;
-    }
+    resta ? response.deudas -= deuda : response.deudas += deuda;
+    resta ? client.deudaTotal -= deuda : client.deudaTotal += deuda;
+    if(client.deudaTotal == 0) client.deuda = false;
+
     await response.save();
     res.status(200).json({cliente: client});
 }
