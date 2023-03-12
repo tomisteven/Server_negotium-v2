@@ -30,7 +30,7 @@ const addDeuda = async (req, res) => {
 const deleteDeuda = async (req, res) => {
     const {user_id} = req.user;
     const {id}  = req.params;
-    const {deuda} = req.body;
+    const {deuda, resta} = req.body;
     const response = await User.findById(user_id);
     const client = response.clientes.find(client => client._id == id);
     //console.log(client);
@@ -38,8 +38,8 @@ const deleteDeuda = async (req, res) => {
         res.status(400).json({message: "El cliente no existe"});
     }
     if(deuda) {
-        response.deudas -= deuda;
-        client.deudaTotal -= deuda;
+        resta ? response.deudas -= deuda : response.deudas += deuda;
+        resta ? client.deudaTotal -= deuda : client.deudaTotal += deuda;
         if(client.deudaTotal == 0) client.deuda = false;
     }else{
         response.deudas -= client.deudaTotal;

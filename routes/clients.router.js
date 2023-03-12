@@ -18,9 +18,9 @@ router.post("/create", [asureAuth], createClient);
 router.post("/create/futureservice/:id", asureAuth, addServiceFuture);
 router.post("/create/service/:id", [asureAuth], addService);
 router.post("/login/:id", loginClient);
+
 router.patch("/create/deuda/:id", [asureAuth], addDeuda);
 router.patch("/delete/deuda/:id", [asureAuth], deleteDeuda);
-
 router.patch("/complete/futureservice/:id/:id_service", [asureAuth], completeServiceFuture);
 router.patch("/update/:id", [asureAuth], updateClient);
 router.patch("/update/username/:id", [asureAuth], updateUsernamePassword);
