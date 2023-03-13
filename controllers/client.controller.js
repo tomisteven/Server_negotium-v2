@@ -37,8 +37,8 @@ const deleteDeuda = async (req, res) => {
      if(!client){
         res.status(400).json({message: "El cliente no existe"});
     }
-    resta ? response.deudas -= deuda : response.deudas += deuda;
-    resta ? client.deudaTotal -= deuda : client.deudaTotal += deuda;
+    resta ? response.deudas -= deuda : response.deudas += parseInt(deuda);
+    resta ? client.deudaTotal -= deuda : client.deudaTotal += parseInt(deuda);
     if(client.deudaTotal == 0) client.deuda = false;
 
     await response.save();
