@@ -16,7 +16,7 @@ const router = Router();
 
 router.post("/create", [asureAuth], createClient);
 router.post("/create/futureservice/:id", asureAuth, addServiceFuture);
-router.post("/create/service/:id", [asureAuth], addService);
+router.post("/create/service/:id", [asureAuth], addService); //addService
 router.post("/login/:id", loginClient);
 
 router.patch("/create/deuda/:id", [asureAuth], addDeuda);
