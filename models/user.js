@@ -109,11 +109,12 @@ const UserSchema = new Schema({
     }],
     pdfs: [{
         nombre: String,
+        descripcion: String,
         tipo: String,
         servicio: String,
         url: String,
         localUrl: String,
-        fecha: Date
+        fecha: Date.now()
     }],
     recordatorios: [{
         nombre: String,
