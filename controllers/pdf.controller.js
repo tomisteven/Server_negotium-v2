@@ -4,7 +4,7 @@ const fs = require("fs");
 
 const createPdf = async (req, res) => {
     const { user_id } = req.user;
-    const {nombre, servicio, fecha} = req.body;
+    const {nombre, servicio, fecha, tipo} = req.body;
      const response = await User.findById(user_id);
     const pdfs = response.pdfs;
     if(req.files){
@@ -13,6 +13,7 @@ const createPdf = async (req, res) => {
                 const newPdf = {
                     nombre: nombre,
                     servicio : servicio,
+                    tipo: tipo,
                     url: result.url || null,
                     fecha: fecha
                 }
