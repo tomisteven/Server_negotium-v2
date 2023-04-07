@@ -1,18 +1,12 @@
-
-
 const User = require("../models/user");
 const cloudinary = require("cloudinary");
 const fs = require("fs");
-const { log } = require("console");
 
 const createPdf = async (req, res) => {
     const { user_id } = req.user;
     const {nombre, servicio, fecha} = req.body;
-    //console.log(req);
-    //console.log(res);
      const response = await User.findById(user_id);
     const pdfs = response.pdfs;
-   //console.log(req.files);
     if(req.files){
         cloudinary.v2.uploader.upload(req.files.url.path, { public_id: nombre }, function(error, result) {
                 console.log(result);
