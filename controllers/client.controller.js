@@ -19,7 +19,7 @@ const allServicesOfAllClients = async (req, res) => {
     clients.forEach(client => {
         client.nextServices.forEach(service => {
             services.push({
-                title: service.nombre,
+                title: client.nombre + " " + client.apellido + " - " + service.fecha.getHours()+ ":" + service.fecha.getMinutes() + `${service.fecha.getHours() > 12 ? " pm" : " am"}` + " - " + service.nombre ,
                 date: service.fecha,
             });
         })
