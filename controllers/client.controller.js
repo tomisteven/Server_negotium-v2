@@ -10,6 +10,29 @@ const {
     getFiles
 } = require("../utils/images");
 
+const allServicesOfAllClients = async (req, res) => {
+    const {user_id} = req.user;
+    const response = await User.findById(user_id);
+
+     const clients = response.clientes;
+    const services = [];
+    clients.forEach(client => {
+        client.nextServices.forEach(service => {
+            services.push({
+                title: service.nombre,
+                date: service.fecha,
+            });
+        })
+        client.serviciosadquiridos.forEach(service => {
+            services.push({
+                title: service.nombre,
+                date: service.fecha,
+            });
+        })
+    })
+    await res.status(200).json(services);
+}
+
 const addDeuda = async (req, res) => {
     const {user_id} = req.user;
     const {id}  = req.params;
@@ -372,5 +395,6 @@ module.exports = {
     getClientX,
     addDeuda,
     deleteDeuda,
-    completeServiceFuture
+    completeServiceFuture,
+    allServicesOfAllClients
 }

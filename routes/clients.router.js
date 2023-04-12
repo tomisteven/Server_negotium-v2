@@ -5,7 +5,7 @@ import { asureAuth, tokenClient } from "../middlewares/authenticated";
 import multipart from "connect-multiparty"; */
 
 const Router = require("express");
-const {getAllClients, getClientConDeuda, getClientSinDeuda,createClient, getServicesOfClient, getClient, addServiceFuture,updateClient, deleteClient, deleteServiceClient, addService,deleteServiceFutureClient, updateUsernamePassword, loginClient, getServicesFuturesOfClient, urlLoginClient, clientesConDeudaItem, clientesSinDeudaItem, getClientX, addDeuda, deleteDeuda, completeServiceFuture } = require("../controllers/client.controller");
+const {getAllClients, getClientConDeuda, getClientSinDeuda,createClient, getServicesOfClient, getClient, addServiceFuture,updateClient, deleteClient, deleteServiceClient, addService,deleteServiceFutureClient, updateUsernamePassword, loginClient, getServicesFuturesOfClient, urlLoginClient, clientesConDeudaItem, clientesSinDeudaItem, getClientX, addDeuda, deleteDeuda, completeServiceFuture, allServicesOfAllClients } = require("../controllers/client.controller");
 const { asureAuth, tokenClient } = require("../middlewares/authenticated");
 const multipart = require("connect-multiparty");
 
@@ -13,6 +13,8 @@ const multipart = require("connect-multiparty");
 const md_upload = multipart({uploadDir: "./uploads"});;
 const router = Router();
 
+
+router.get("/all/services", [asureAuth], allServicesOfAllClients);
 
 router.post("/create", [asureAuth], createClient);
 router.post("/create/futureservice/:id", asureAuth, addServiceFuture);
