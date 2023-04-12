@@ -116,7 +116,7 @@ const UserSchema = new Schema({
         localUrl: String,
         fecha: {
             type: Date,
-            default: Date.now()
+            default: Date.now().toLocaleString()
         }
     }],
     recordatorios: [{
