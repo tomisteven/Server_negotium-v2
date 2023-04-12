@@ -114,10 +114,7 @@ const UserSchema = new Schema({
         servicio: String,
         url: String,
         localUrl: String,
-        fecha: {
-            type: Date,
-            default: Date.now().toLocaleString()
-        }
+        fecha: String,
     }],
     recordatorios: [{
         nombre: String,

@@ -1,21 +1,21 @@
 const User = require("../models/user");
 const cloudinary = require("cloudinary");
 const fs = require("fs");
+const moment = require('moment-timezone');
 
 const createPdf = async (req, res) => {
     const { user_id } = req.user;
-    const {nombre, servicio, fecha, tipo} = req.body;
+    const {nombre, servicio, tipo} = req.body;
      const response = await User.findById(user_id);
     const pdfs = response.pdfs;
     if(req.files){
         cloudinary.v2.uploader.upload(req.files.url.path, { public_id: nombre }, function(error, result) {
-                console.log(result);
                 const newPdf = {
                     nombre: nombre,
                     servicio : servicio,
                     tipo: tipo,
                     url: result.url || null,
-                    fecha: fecha
+                    fecha: moment().tz("America/Argentina/Buenos_Aires").format("DD/MM/YYYY HH:mm:ss"),
                 }
                 pdfs.push(newPdf)
                 response.pdfs = pdfs
