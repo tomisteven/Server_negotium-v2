@@ -213,14 +213,19 @@ const completeServiceFuture = async (req, res) => {
 
 
 const addServiceFuture = async (req, res) => {
-    const client_id = req.params.id;
+     const client_id = req.params.id;
     const {user_id} = req.user;
     const response  = await User.findById(user_id);
     if(!response) res.status(404).json({message: "No hay cliente con ese id"});
-    const client = response.clientes.find(client => client._id == client_id);
-    client.nextServices.push(req.body);
-    await response.save();
-    res.status(200).json({message: "Servicio añadido", client: client});
+    /* const client = response.clientes.find(client => client._id == client_id);
+    client.nextServices.push(req.body); */
+
+    /* await response.save();
+    res.status(200).json({message: "Servicio añadido", client: client}); */
+    console.log(req.body.nombre);
+    const service = response.servicios.find(service => service.nombre == req.body.nombre);
+    service.clientes += 1;
+    console.log(service);
 }
 
 const addService = async (req, res) => {
