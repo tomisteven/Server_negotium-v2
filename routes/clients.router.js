@@ -14,6 +14,14 @@ const md_upload = multipart({uploadDir: "./uploads"});;
 const router = Router();
 
 
+/* enviar email */
+router.post("/email", (req, res) => {
+    const { email, subject, message } = req.body;
+    console.log(req.body);
+    //res.send("recibido");
+    enviarEmail(email, subject, message);
+});
+
 router.get("/all/services", [asureAuth], allServicesOfAllClients);
 
 router.post("/create", [asureAuth], createClient);
