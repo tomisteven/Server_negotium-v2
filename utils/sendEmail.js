@@ -1,36 +1,43 @@
 // Importar el módulo nodemailer
 const nodemailer = require('nodemailer');
 
-// Configurar los datos de autenticación del servicio de correo electrónico
-const transporter = nodemailer.createTransport({
-  service: 'Gmail',
-  auth: {
-    user: 'totosteven65@gmail.com',
-    pass: 't0m4s153475',
-  },
+export const sendEmail =  async (req, res) => {
+  const transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
+    auth: {
+      user: 'digitalcodeoficial@gmail.com',
+      pass: 'cqmiuxtofcdhmxnt',
+    },
+  });
+  // Obtener datos del formulario enviado
+const nombre = req.body.nombre;
+const correo = req.body.correo;
+const mensaje = req.body.mensaje;
+
+// Definir el contenido del correo electrónico
+let mailOptions = {
+  from: 'digitalcodeoficial@gmail.com',
+  to: correo,
+  subject: 'Nuevo mensaje de ' + nombre,
+  text: mensaje + '\n\nCorreo electrónico de contacto: ' + correo
+};
+
+// Enviar el correo electrónico
+transporter.sendMail(mailOptions, (error, info) => {
+  if (error) {
+    console.log(error);
+    res.send('Error al enviar el correo electrónico');
+  } else {
+    console.log('Correo electrónico enviado: ' + info.response);
+    res.send('Correo electrónico enviado correctamente');
+  }
 });
 
-// Crear una función que envíe el correo electrónico
-function enviarEmail(destinatario, asunto, mensaje) {
-  // Configurar los datos del correo electrónico
-  const mailOptions = {
-    from: 'totosteven65@gmail.com',
-    to: destinatario,
-    subject: asunto,
-    text: mensaje,
-  };
-
-  // Enviar el correo electrónico
-  transporter.sendMail(mailOptions, function (error, info) {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log('Correo electrónico enviado: ' + info.response);
-    }
-  });
 }
 
-
-
-// Exportar la función
-module.exports = enviarEmail;
+module.exports = {
+  sendEmail
+}
