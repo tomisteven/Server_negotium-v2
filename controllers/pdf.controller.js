@@ -25,6 +25,11 @@ const createPdf = async (req, res) => {
         };
         pdfs.push(newPdf);
         response.pdfs = pdfs;
+        fs.unlink(req.files.url.path, (err) => {
+          if (err) {
+            res.status(500).send({ message: "Error al eliminar el archivo" });
+          }
+        });
         response.save((err, pdfStored) => {
           if (err) {
             res.status(500).send({ message: "Error del servidor" });

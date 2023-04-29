@@ -161,9 +161,6 @@ const updateUser = async (req, res) => {
     //si el usuario envia una nueva imagen
     if (req.files.avatar) {
       const imagePath = getFiles(req.files.avatar);
-      /* console.log(imagePath);
-            console.log(USER.email);
-            console.log(req.files.avatar); */
       await cloudinary.v2.uploader.destroy(USER.email, (err, result) => {
         if (err) {
           res
@@ -182,13 +179,9 @@ const updateUser = async (req, res) => {
               .send({ message: "Error al subir la imagen a cloudinary" });
           } else {
             userData.avatar = result.url;
-            fs.unlinkSync("./" + imagePath, (err) => {
+            fs.unlink(req.files.avatar.path, (err) => {
               if (err) {
-                res
-                  .status(500)
-                  .send({
-                    message: "Error al eliminar la imagen del servidor",
-                  });
+                res.status(500).send({ message: "Error al eliminar el archivo" });
               }
             });
           }
