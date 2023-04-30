@@ -147,10 +147,7 @@ const UserSchema = new Schema({
     }],
     configuraciones: [
         {
-            fontColor: {
-                type: String,
-                default: "#000000"
-            }
+            fontColor: Boolean
         }
     ],
 });
