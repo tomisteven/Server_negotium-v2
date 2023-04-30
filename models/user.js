@@ -145,6 +145,14 @@ const UserSchema = new Schema({
             default: Date.now()
         }
     }],
+    configuraciones: [
+        {
+            fontColor: {
+                type: String,
+                default: "#000000"
+            }
+        }
+    ],
 });
 
 //exportar
