@@ -145,11 +145,10 @@ const UserSchema = new Schema({
             default: Date.now()
         }
     }],
-    configuraciones: [
-        {
-            fontColor: Boolean
-        }
-    ],
+    obscuro : {
+        type: Boolean,
+        default: false
+    },
 });
 
 //exportar
