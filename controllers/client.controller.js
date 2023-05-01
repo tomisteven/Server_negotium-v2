@@ -18,6 +18,8 @@ const allServicesOfAllClients = async (req, res) => {
     client.nextServices.forEach((service) => {
       services.push({
         title:
+          service.nombre +
+          " - " +
           client.nombre +
           " " +
           client.apellido +
