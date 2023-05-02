@@ -85,7 +85,7 @@ const createClient = async (req, res) => {
   );
 
   if(response.clientes.length == membresia_active.clientes_max){
-    return res.status(400).json({message: "No se puede agregar más clientes"})
+    return res.status(400).json({message: "No se puede agregar más clientes", ok: false})
   }else{
     const client = response.clientes.find(
       (client) => client.email == req.body.email
@@ -97,7 +97,7 @@ const createClient = async (req, res) => {
       response.deudas += req.body.deudaTotal;
       response.clientes.push(req.body);
       await response.save();
-      res.status(200).json({ message: "Cliente creado", client: req.body });
+      res.status(200).json({ message: "Cliente creado", client: req.body, ok: true });
     }
   }
 
