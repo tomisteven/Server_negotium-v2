@@ -11,7 +11,7 @@ const createPdf = async (req, res) => {
 
   const membresia_active = response.membresias.find((m) => m.activa === true);
   if (membresia_active.archivos_max == pdfs.length) {
-    return res.status(400).json({ message: "No puedes subir mas archivos" });
+    return res.status(400).json({ message: "No puedes subir mas archivos", ok: false });
   } else {
     if (req.files) {
       cloudinary.v2.uploader.upload(
@@ -45,6 +45,7 @@ const createPdf = async (req, res) => {
                   code: 200,
                   message: "Pdf creado correctamente",
                   newPdf,
+                  ok: true,
                 });
               }
             }

@@ -33,13 +33,13 @@ const createService = async (req, res) => {
 
   const membresia_active = response.membresias.find((m) => m.activa == true);
   if (membresia_active.servicios_max == services.length) {
-    res.status(400).json({ message: "No puede agregar mas servicios" });
+    res.status(400).json({ message: "No puede agregar mas servicios", ok: false });
   } else {
     services.push(newService);
     response.servicios = services;
     const result = await response.save();
     result
-      ? res.status(200).json(result)
+      ? res.status(200).json({ message: "Servicio creado", ok: true })
       : res.status(404).json({ message: "No es un id Valido" });
   }
 };
