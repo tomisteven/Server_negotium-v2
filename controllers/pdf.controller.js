@@ -9,48 +9,51 @@ const createPdf = async (req, res) => {
   const response = await User.findById(user_id);
   const pdfs = response.pdfs;
 
-  if (req.files) {
-    cloudinary.v2.uploader.upload(
-      req.files.url.path,
-      { public_id: nombre },
-      function (error, result) {
-        const newPdf = {
-          nombre: nombre,
-          servicio: servicio,
-          tipo: tipo,
-          url: result.url || null,
-          fecha: moment()
-            .tz("America/Argentina/Buenos_Aires")
-            .format("DD/MM/YYYY HH:mm:ss"),
-        };
-        pdfs.push(newPdf);
-        response.pdfs = pdfs;
-        fs.unlink(req.files.url.path, (err) => {
-          if (err) {
-            res.status(500).send({ message: "Error al eliminar el archivo" });
-          }
-        });
-        response.save((err, pdfStored) => {
-          if (err) {
-            res.status(500).send({ message: "Error del servidor" });
-          } else {
-            if (!pdfStored) {
-              res.status(404).send({ message: "No se ha encontrado el pdf" });
+  const membresia_active = response.membresias.find((m) => m.activa === true);
+  if (membresia_active.archivos_max == pdfs.length) {
+    return res.status(400).json({ message: "No puedes subir mas archivos" });
+  } else {
+    if (req.files) {
+      cloudinary.v2.uploader.upload(
+        req.files.url.path,
+        { public_id: nombre },
+        function (error, result) {
+          const newPdf = {
+            nombre: nombre,
+            servicio: servicio,
+            tipo: tipo,
+            url: result.url || null,
+            fecha: moment()
+              .tz("America/Argentina/Buenos_Aires")
+              .format("DD/MM/YYYY HH:mm:ss"),
+          };
+          pdfs.push(newPdf);
+          response.pdfs = pdfs;
+          fs.unlink(req.files.url.path, (err) => {
+            if (err) {
+              res.status(500).send({ message: "Error al eliminar el archivo" });
+            }
+          });
+          response.save((err, pdfStored) => {
+            if (err) {
+              res.status(500).send({ message: "Error del servidor" });
             } else {
-              res
-                .status(200)
-                .send({
+              if (!pdfStored) {
+                res.status(404).send({ message: "No se ha encontrado el pdf" });
+              } else {
+                res.status(200).send({
                   code: 200,
                   message: "Pdf creado correctamente",
                   newPdf,
                 });
+              }
             }
-          }
-        });
-      }
-    );
-  } else {
-    res.status(404).json({ message: "No hay archivos" });
+          });
+        }
+      );
+    } else {
+      res.status(404).json({ message: "No hay archivos" });
+    }
   }
 };
 

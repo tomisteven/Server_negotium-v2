@@ -6,7 +6,7 @@ import {asureAuth} from "../middlewares/authenticated";
 import cloudinaryConfig from "../utils/cludinary"; */
 
 const Router = require("express");
-const {getMe, getAll, updateUser,deleteUser, getMembresiaActive, getMembresiaInactive, createUser, createUrlLogin, updateUserGeneral , sendMail} = require("../controllers/user.controller");
+const {getMe, getAll, updateUser,deleteUser, getMembresiaActive, getMembresiaInactive, createUser, createUrlLogin, updateUserGeneral , sendMail, updateMembresia, update_membresia} = require("../controllers/user.controller");
 const multipart = require("connect-multiparty");
 const {asureAuth} = require("../middlewares/authenticated");
 const cloudinaryConfig = require("../utils/cludinary");
@@ -27,6 +27,7 @@ router.post("/user", [asureAuth, md_upload], createUser);
 
 router.patch("/user/avatar/:id", [asureAuth, md_upload, cloudinaryConfig], updateUser);
 router.patch("/user/update", [asureAuth], updateUserGeneral);
+router.patch("/user/active/membresia", [asureAuth], update_membresia );
 
 router.delete("/user/:id", [asureAuth], deleteUser);
 

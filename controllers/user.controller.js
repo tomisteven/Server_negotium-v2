@@ -21,6 +21,32 @@ const fs = require("fs");
 const nodemailer = require("nodemailer");
 const { log } = require("console");
 
+
+async function update_membresia(req, res) {
+  const { user_id } = req.user;
+  const { nombre } = req.body;
+
+  const user = await User.findById(user_id);
+  const membresias =  user.membresias;
+   const membresia_update = membresias.find((m) => m.nombre === nombre);
+  console.log(membresia_update);
+  membresia_update.activa = true;
+  membresias.forEach((m) => {
+    if (m.nombre !== nombre) {
+      m.activa = false;
+    }
+  });
+
+  const user_update = await User.findByIdAndUpdate(
+    user_id,
+    { membresias: membresias },
+    { new: true }
+  );
+  res.status(200).send({ membresias: user_update.membresias });
+}
+
+
+
 async function sendMail(req, res) {
   const { user_id } = req.user;
   const { client } = req.params;
@@ -31,7 +57,7 @@ async function sendMail(req, res) {
   /* console.log(mail_user);
   console.log(mail_client); */
   //obtener todo lo que esta despues del @
-   const mail_user_split = mail_user.split("@")[1];
+  const mail_user_split = mail_user.split("@")[1];
 
   const transporter = nodemailer.createTransport({
     service: mail_user_split == "gmail.com" ? "Gmail" : "Hotmail",
@@ -59,10 +85,10 @@ async function sendMail(req, res) {
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
       console.log(error);
-        res.status(400).json({message: "Error al enviar correo electrónico"});
+      res.status(400).json({ message: "Error al enviar correo electrónico" });
     } else {
       //console.log("Correo electrónico enviado: " + info.response);
-        res.status(200).json({message: "Correo electrónico enviado"});
+      res.status(200).json({ message: "Correo electrónico enviado" });
     }
   });
 }
@@ -120,10 +146,10 @@ const createUser = async (req, res) => {
     url_login: "http://localhost:3000/login/" + req.body._id,
   });
   console.log(req.body);
-  if (req.files.avatar) {
+  /* if (req.files.avatar) {
     const imagePath = getFiles(req.files.avatar);
     user.avatar = imagePath;
-  }
+  } */
   user.save((err, userStored) => {
     if (err) {
       res.status(500).send({ message: "Error de servidor" });
@@ -181,7 +207,9 @@ const updateUser = async (req, res) => {
             userData.avatar = result.url;
             fs.unlink(req.files.avatar.path, (err) => {
               if (err) {
-                res.status(500).send({ message: "Error al eliminar el archivo" });
+                res
+                  .status(500)
+                  .send({ message: "Error al eliminar el archivo" });
               }
             });
           }
@@ -196,19 +224,17 @@ const updateUser = async (req, res) => {
         if (!userUpdate) {
           res.status(404).send({ message: "No se ha encontrado el usuario" });
         } else {
-          res
-            .status(200)
-            .send({
-              message: "Usuario actualizado correctamente",
-              user: userUpdate,
-            });
+          res.status(200).send({
+            message: "Usuario actualizado correctamente",
+            user: userUpdate,
+          });
         }
       }
     });
   }
 };
 
-const updateMembresia = async (req, res) => {
+ const updateMembresia = async (req, res) => {
   const { user_id } = req.user;
   const UserData = req.body;
 
@@ -219,12 +245,10 @@ const updateMembresia = async (req, res) => {
       if (!userUpdate) {
         res.status(404).send({ message: "No se ha encontrado el usuario" });
       } else {
-        res
-          .status(200)
-          .send({
-            message: "Usuario actualizado correctamente",
-            user: userUpdate,
-          });
+        res.status(200).send({
+          message: "Usuario actualizado correctamente",
+          user: userUpdate,
+        });
       }
     }
   });
@@ -275,4 +299,5 @@ module.exports = {
   updateUserGeneral: updateMembresia,
   updateMembresia,
   sendMail,
+  update_membresia
 };

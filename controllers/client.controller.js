@@ -80,18 +80,28 @@ const createClient = async (req, res) => {
   const { user_id } = req.user;
   const response = await User.findById(user_id);
 
-  const client = response.clientes.find(
-    (client) => client.email == req.body.email
+  const membresia_active = response.membresias.find(
+    (membresia) => membresia.activa == true
   );
-  if (client) {
-    res.status(400).json({ message: "El cliente con ese EMAIL ya existe" });
-  } else {
-    response.recaudado += req.body.gastoTotal;
-    response.deudas += req.body.deudaTotal;
-    response.clientes.push(req.body);
-    await response.save();
-    res.status(200).json({ message: "Cliente creado", client: req.body });
+
+  if(response.clientes.length == membresia_active.clientes_max){
+    return res.status(400).json({message: "No se puede agregar más clientes"})
+  }else{
+    const client = response.clientes.find(
+      (client) => client.email == req.body.email
+    );
+    if (client) {
+      res.status(400).json({ message: "El cliente con ese EMAIL ya existe" });
+    } else {
+      response.recaudado += req.body.gastoTotal;
+      response.deudas += req.body.deudaTotal;
+      response.clientes.push(req.body);
+      await response.save();
+      res.status(200).json({ message: "Cliente creado", client: req.body });
+    }
   }
+
+
 };
 
 const getAllClients = async (req, res) => {

@@ -15,12 +15,39 @@ const fs = require("fs")
 
 const register = async (req, res) => {
     const {password, repeatPassword, email, name, lastname} = req.body;
+    const membresias = [
+        {
+          nombre: "Inicial",
+          precio: 0,
+          clientes_max: 12,
+          servicios_max : 7,
+          archivos_max: 5,
+          recordatorios_max: 10,
+          activa: true,
+        },{
+          nombre: "Standart",
+          precio: 300,
+          clientes_max: 20,
+          servicios_max : 14,
+          archivos_max: 12,
+          recordatorios_max: 20,
+          activa: false
+        },{
+          nombre: "Premium",
+          precio: 850,
+          clientes_max: 30,
+          servicios_max : 20,
+          archivos_max: 20,
+          recordatorios_max: 40,
+          activa: false,
+        }
+      ]
      const user = new User({
         email: email.toLowerCase(),
         name: name,
         lastname: lastname,
         role: "user",
-        membresia: false
+        membresias: membresias,
     });
 
     const users = await User.find();

@@ -2,16 +2,6 @@
 
 const User = require("../models/user.js");
 
-/* servicios: [{
-        nombre: String,
-        precio: Number,
-        cantidadVendidos: Number,
-        cantidadDisponibles: Number,
-        descripcion: String,
-        imagen: String,
-        fecha: Date
-}],*/
-
 const getServices = async (req, res) => {
   const { user_id } = req.user;
   const response = await User.findById(user_id);
@@ -40,12 +30,18 @@ const createService = async (req, res) => {
     cantidadDisponibles,
     descripcion,
   };
-  services.push(newService);
-  response.servicios = services;
-  const result = await response.save();
-  result
-    ? res.status(200).json(result)
-    : res.status(404).json({ message: "No es un id Valido" });
+
+  const membresia_active = response.membresias.find((m) => m.activa == true);
+  if (membresia_active.servicios_max == services.length) {
+    res.status(400).json({ message: "No puede agregar mas servicios" });
+  } else {
+    services.push(newService);
+    response.servicios = services;
+    const result = await response.save();
+    result
+      ? res.status(200).json(result)
+      : res.status(404).json({ message: "No es un id Valido" });
+  }
 };
 
 const itemService = async (req, res) => {
@@ -103,7 +99,8 @@ const updateService = async (req, res) => {
   service.nombre = form.nombre || service.nombre;
   service.precio = form.precio || service.precio;
   service.cantidadVendidos = form.cantidadVendidos || service.cantidadVendidos;
-  service.cantidadDisponibles = form.cantidadDisponibles || service.cantidadDisponibles;
+  service.cantidadDisponibles =
+    form.cantidadDisponibles || service.cantidadDisponibles;
   service.descripcion = form.descripcion || service.descripcion;
   service.habilitado = form.habilitado || service.habilitado;
   service.clientes = form.clientes || service.clientes;
