@@ -6,6 +6,22 @@
 
 const User = require("../models/user.js");
 
+const completeAllAlerts = async (req, res) => {
+  const { user_id } = req.user;
+  const user = await User.findById(user_id);
+  if (!user) res.status(404).json({ message: "No hay cliente con ese id" });
+  const recordatorios = user.recordatorios;
+  console.log(user);
+   recordatorios.forEach((r) => {
+    r.completed = true;
+  });
+  const result = await user.save();
+  result
+    ? res.status(200).json({ message: "Recordatorios completados" })
+    : res.status(404).json({ message: "No es un id Valido" });
+}
+
+
 const toggleRecordatorio = async (req, res) => {
   const { user_id } = req.user;
   const id = req.params.id;
@@ -97,4 +113,5 @@ module.exports = {
   updateRecordatorio,
   deleteRecordatorio,
   toggleRecordatorio,
+  completeAllAlerts
 };
