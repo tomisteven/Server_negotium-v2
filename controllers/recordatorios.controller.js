@@ -9,11 +9,12 @@ const User = require("../models/user.js");
 const completeAllAlerts = async (req, res) => {
   const { user_id } = req.user;
   const user = await User.findById(user_id);
+  const {state} = req.body;
   if (!user) res.status(404).json({ message: "No hay cliente con ese id" });
   const recordatorios = user.recordatorios;
-  console.log(user);
+  //console.log(user);
    recordatorios.forEach((r) => {
-    r.completed = true;
+    r.completed = state;
   });
   const result = await user.save();
   result
