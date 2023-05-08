@@ -25,7 +25,7 @@ router.get("/users/inactive", [asureAuth], getMembresiaInactive);
 
 router.post("/user", [asureAuth, md_upload], createUser);
 
-router.patch("/user/avatar/:id", [asureAuth, md_upload, cloudinaryConfig], updateUser);
+router.patch("/user/avatar", [asureAuth, md_upload, cloudinaryConfig], updateUser);
 router.patch("/user/update", [asureAuth], updateUserGeneral);
 router.patch("/user/active/membresia", [asureAuth], update_membresia );
 

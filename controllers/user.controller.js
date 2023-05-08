@@ -21,14 +21,13 @@ const fs = require("fs");
 const nodemailer = require("nodemailer");
 const { log } = require("console");
 
-
 async function update_membresia(req, res) {
   const { user_id } = req.user;
   const { nombre } = req.body;
 
   const user = await User.findById(user_id);
-  const membresias =  user.membresias;
-   const membresia_update = membresias.find((m) => m.nombre === nombre);
+  const membresias = user.membresias;
+  const membresia_update = membresias.find((m) => m.nombre === nombre);
   console.log(membresia_update);
   membresia_update.activa = true;
   membresias.forEach((m) => {
@@ -44,8 +43,6 @@ async function update_membresia(req, res) {
   );
   res.status(200).send({ membresias: user_update.membresias });
 }
-
-
 
 async function sendMail(req, res) {
   const { user_id } = req.user;
@@ -169,72 +166,54 @@ const createUser = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-  const { id } = req.params;
-  const userData = req.body;
-  const USER = await User.findById(id);
-  const emailExist = await User.findById(id);
-  if (emailExist.email == userData.email) {
-    res.status(404).send({ message: "El email ya existe" });
-  } else {
-    //si el usuario envia una nueva contraseña
-    if (userData.password) {
-      const salt = bcrypt.genSaltSync(10);
-      const hash = bcrypt.hashSync(userData.password, salt);
-      userData.password = hash;
-    } else {
-      delete userData.password;
-    }
-    //si el usuario envia una nueva imagen
-    if (req.files.avatar) {
-      const imagePath = getFiles(req.files.avatar);
-      await cloudinary.v2.uploader.destroy(USER.email, (err, result) => {
+  const { user_id } = req.user;
+
+    const USER = await User.findById({ _id: user_id });
+
+  //si el usuario envia una nueva imagen
+  if (req.files.avatar) {
+
+    await cloudinary.v2.uploader.upload(
+      req.files.avatar.path,
+      { public_id: USER.email, overwrite: true },
+
+      (err, result) => {
         if (err) {
           res
             .status(500)
-            .send({ message: "Error al eliminar la imagen de cloudinary" });
-        }
-      });
-
-      await cloudinary.v2.uploader.upload(
-        req.files.avatar.path,
-        { public_id: USER.email },
-        (err, result) => {
-          if (err) {
-            res
-              .status(500)
-              .send({ message: "Error al subir la imagen a cloudinary" });
-          } else {
-            userData.avatar = result.url;
-            fs.unlink(req.files.avatar.path, (err) => {
-              if (err) {
-                res
-                  .status(500)
-                  .send({ message: "Error al eliminar el archivo" });
-              }
-            });
-          }
-        }
-      );
-    }
-
-    await User.findByIdAndUpdate({ _id: id }, userData, (err, userUpdate) => {
-      if (err) {
-        res.status(500).send({ message: "Error al actualizar el usuario" });
-      } else {
-        if (!userUpdate) {
-          res.status(404).send({ message: "No se ha encontrado el usuario" });
+            .send({ message: "Error al subir la imagen a cloudinary" });
         } else {
-          res.status(200).send({
-            message: "Usuario actualizado correctamente",
-            user: userUpdate,
+          USER.avatar = result.url;
+          fs.unlink(req.files.avatar.path, (err) => {
+            if (err) {
+              res.status(500).send({ message: "Error al eliminar el archivo" });
+            }
           });
         }
       }
-    });
+    );
   }
-};
 
- const updateMembresia = async (req, res) => {
+  await User.findByIdAndUpdate({ _id: USER._id }, USER, (err, userUpdate) => {
+    if (err) {
+      res.status(500).send({ message: "Error al actualizar el usuario" });
+    } else {
+      if (!userUpdate) {
+        res.status(404).send({ message: "No se ha encontrado el usuario" });
+      } else {
+        res.status(200).send({
+          message: "Usuario actualizado correctamente",
+          user: userUpdate,
+        });
+      }
+    }
+  });
+
+}
+
+
+
+const updateMembresia = async (req, res) => {
   const { user_id } = req.user;
   const UserData = req.body;
 
@@ -299,5 +278,5 @@ module.exports = {
   updateUserGeneral: updateMembresia,
   updateMembresia,
   sendMail,
-  update_membresia
+  update_membresia,
 };
