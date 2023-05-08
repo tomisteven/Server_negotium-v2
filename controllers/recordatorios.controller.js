@@ -6,6 +6,19 @@
 
 const User = require("../models/user.js");
 
+const deleteAllRecordatorios = async (req, res) => {
+  const { user_id } = req.user;
+  const user = await User.findById(user_id);
+
+  if (!user) res.status(404).json({ message: "No hay cliente con ese id" });
+  const recordatorios = user.recordatorios;
+  recordatorios.splice(0, recordatorios.length);
+  const result = await user.save();
+  result
+    ? res.status(200).json({ message: "Recordatorios eliminados", r: result.recordatorios })
+    : res.status(404).json({ message: "Error" });
+}
+
 const completeAllAlerts = async (req, res) => {
   const { user_id } = req.user;
   const user = await User.findById(user_id);
@@ -114,5 +127,6 @@ module.exports = {
   updateRecordatorio,
   deleteRecordatorio,
   toggleRecordatorio,
-  completeAllAlerts
+  completeAllAlerts,
+   deleteAllRecordatorios
 };
