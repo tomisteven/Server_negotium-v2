@@ -194,7 +194,7 @@ const updateUser = async (req, res) => {
     );
   }
 
-  await User.findByIdAndUpdate({ _id: USER._id }, USER, (err, userUpdate) => {
+  await User.updateOne({ _id: USER._id }, USER, (err, userUpdate) => {
     if (err) {
       res.status(500).send({ message: "Error al actualizar el usuario" });
     } else {
