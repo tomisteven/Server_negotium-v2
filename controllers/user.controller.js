@@ -165,7 +165,7 @@ const createUser = async (req, res) => {
   });
 };
 
-const updateUser = async (req, res) => {
+const updateAvatar = async (req, res) => {
   const { user_id } = req.user;
 
     const USER = await User.findById({ _id: user_id });
@@ -213,9 +213,15 @@ const updateUser = async (req, res) => {
 
 
 
-const updateMembresia = async (req, res) => {
+const updateUSER = async (req, res) => {
   const { user_id } = req.user;
   const UserData = req.body;
+
+  if (UserData.password) {
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync(UserData.password, salt);
+    UserData.password = hash;
+  }
 
   User.findOneAndUpdate({ _id: user_id }, UserData, (err, userUpdate) => {
     if (err) {
@@ -268,15 +274,14 @@ const deleteUser = async (req, res) => {
 
 module.exports = {
   createUser,
-  updateUser,
+  updateAvatar,
   deleteUser,
   getMe,
   getAll,
   getMembresiaActive,
   getMembresiaInactive,
   createUrlLogin,
-  updateUserGeneral: updateMembresia,
-  updateMembresia,
+  updateUSER,
   sendMail,
   update_membresia,
 };
