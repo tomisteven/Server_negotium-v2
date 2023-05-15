@@ -72,6 +72,8 @@ const deleteDeuda = async (req, res) => {
   resta ? (client.deudaTotal -= deuda) : (client.deudaTotal += parseInt(deuda));
   if (client.deudaTotal == 0) client.deuda = false;
 
+  if (response.deudas < 0) response.deudas = 0;
+
   await response.save();
   res.status(200).json({ cliente: client });
 };
@@ -84,9 +86,11 @@ const createClient = async (req, res) => {
     (membresia) => membresia.activa == true
   );
 
-  if(response.clientes.length == membresia_active.clientes_max){
-    return res.status(400).json({message: "No se puede agregar más clientes", ok: false})
-  }else{
+  if (response.clientes.length == membresia_active.clientes_max) {
+    return res
+      .status(400)
+      .json({ message: "No se puede agregar más clientes", ok: false });
+  } else {
     const client = response.clientes.find(
       (client) => client.email == req.body.email
     );
@@ -97,11 +101,11 @@ const createClient = async (req, res) => {
       response.deudas += req.body.deudaTotal;
       response.clientes.push(req.body);
       await response.save();
-      res.status(200).json({ message: "Cliente creado", client: req.body, ok: true });
+      res
+        .status(200)
+        .json({ message: "Cliente creado", client: req.body, ok: true });
     }
   }
-
-
 };
 
 const getAllClients = async (req, res) => {
@@ -231,12 +235,10 @@ const completeServiceFuture = async (req, res) => {
     (service) => service._id != service_id
   );
   await user.save();
-  res
-    .status(200)
-    .json({
-      message: "Servicio completado",
-      client: client.serviciosadquiridos,
-    });
+  res.status(200).json({
+    message: "Servicio completado",
+    client: client.serviciosadquiridos,
+  });
 };
 
 const addServiceFuture = async (req, res) => {
@@ -245,15 +247,16 @@ const addServiceFuture = async (req, res) => {
   const response = await User.findById(user_id);
   if (!response) res.status(404).json({ message: "No hay cliente con ese id" });
   const client = response.clientes.find((client) => client._id == client_id);
-  client.nextServices.push(req.body);
 
-  await response.save();
-  res.status(200).json({ message: "Servicio añadido", client: client });
-  console.log(req.body.nombre);
+  client.nextServices.push(req.body);
   const service = response.servicios.find(
     (service) => service.nombre == req.body.nombre
   );
+
   service.clientes += 1;
+  response.totalServiciosUsados += 1;
+  await response.save();
+  res.status(200).json({ message: "Servicio añadido", client: client });
   console.log(service);
 };
 
@@ -285,6 +288,7 @@ const addService = async (req, res) => {
 const updateClient = async (req, res) => {
   const client_id = req.params.id;
   const { user_id } = req.user;
+  console.log(req.body);
   const response = await User.findById(user_id);
   if (!response) res.status(404).json({ message: "No hay cliente con ese id" });
   const client = response.clientes.find((client) => client._id == client_id);
@@ -297,7 +301,9 @@ const updateClient = async (req, res) => {
     client.deudaTotal = req.body.deudaTotal || client.deudaTotal;
     client.dni = req.body.dni || client.dni;
     client.direccion = req.body.direccion || client.direccion;
-    client.gastoTotal = req.body.gastoTotal || client.gastoTotal;
+    client.gastoTotal == 0
+      ? (client.gastoTotal = req.body.gastoTotal)
+      : (client.gastoTotal = req.body.gastoTotal);
     client.serviciosadquiridos =
       req.body.serviciosadquiridos || client.serviciosadquiridos;
     client.genero = req.body.genero || client.genero;
@@ -336,6 +342,7 @@ const deleteServiceClient = async (req, res) => {
     if (service != null) {
       client.serviciosadquiridos.remove(service);
       client.gastoTotal -= service.precio;
+      if (client.gastoTotal < 0) client.gastoTotal = 0;
       response.recaudado -= service.precio;
       await response.save();
       res.status(200).json({ message: "Servicio eliminado", client: client });

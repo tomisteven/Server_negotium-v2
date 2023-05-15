@@ -8,7 +8,7 @@ const jwt = require("jsonwebtoken");
 
  const createToken = (user) => {
     const expToken = new Date();
-    expToken.setHours(expToken.getHours() + 30);
+    expToken.setHours(expToken.getHours() + 750);
     const payload = {
         token_type: "access",
         user_id : user._id,

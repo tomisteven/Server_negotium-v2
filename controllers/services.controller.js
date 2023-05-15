@@ -32,8 +32,13 @@ const createService = async (req, res) => {
   };
 
   const membresia_active = response.membresias.find((m) => m.activa == true);
-  if (membresia_active.servicios_max == services.length) {
+
+  console.log(membresia_active);
+  console.log(services.length);
+
+   if (membresia_active.servicios_max <= services.length) {
     res.status(400).json({ message: "No puede agregar mas servicios", ok: false });
+    return;
   } else {
     services.push(newService);
     response.servicios = services;

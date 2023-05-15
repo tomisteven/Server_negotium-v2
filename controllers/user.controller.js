@@ -142,11 +142,6 @@ const createUser = async (req, res) => {
     active: true,
     url_login: "http://localhost:3000/login/" + req.body._id,
   });
-  console.log(req.body);
-  /* if (req.files.avatar) {
-    const imagePath = getFiles(req.files.avatar);
-    user.avatar = imagePath;
-  } */
   user.save((err, userStored) => {
     if (err) {
       res.status(500).send({ message: "Error de servidor" });
@@ -168,11 +163,10 @@ const createUser = async (req, res) => {
 const updateAvatar = async (req, res) => {
   const { user_id } = req.user;
 
-    const USER = await User.findById({ _id: user_id });
+  const USER = await User.findById({ _id: user_id });
 
   //si el usuario envia una nueva imagen
   if (req.files.avatar) {
-
     await cloudinary.v2.uploader.upload(
       req.files.avatar.path,
       { public_id: USER.email, overwrite: true },
@@ -208,10 +202,7 @@ const updateAvatar = async (req, res) => {
       }
     }
   });
-
-}
-
-
+};
 
 const updateUSER = async (req, res) => {
   const { user_id } = req.user;

@@ -16,8 +16,14 @@ function asureAuth(req,res,next){
     }
 
     try {
+        //el payload es el objeto que se envio al momento de crear el token
         const payload = decodedToken(token);
+        // el exp es el tiempo de expiracion del token
         const {exp} = payload;
+        //console.log(exp);
+        const exp_mode_date = new Date(exp);
+        const format_date = exp_mode_date.toLocaleString();
+        console.log(format_date);
         const now = new Date().getTime();
         //si el token ya expiro
         if(now >= exp){
