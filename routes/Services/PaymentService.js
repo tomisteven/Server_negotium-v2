@@ -6,7 +6,7 @@ class PaymentService {
   async createPayment(req, res, data) {
     const url = "https://api.mercadopago.com/checkout/preferences";
     const { id_token } = req.params;
-    const { product, price } = req.query;
+    const { product, price, tipo } = req.query;
     const precio = parseInt(price);
      const body = {
       payer_email: "",
@@ -24,7 +24,7 @@ class PaymentService {
       back_urls: {
         failure: "/failure",
         pending: "/pending",
-        success: "http://localhost:3000/admin/planes",
+        success: "http://localhost:3000/admin/planes"
       },
     };
 
@@ -60,7 +60,12 @@ class PaymentService {
         transaction_amount: price,
         currency_id: "ARS",
       },
-      back_url: "https://tomsteven.netlify.app/",
+      back_url: "/admin/planes",
+      back_urls: {
+        success: "http://localhost:3000/admin/planes",
+        failure: "/failure",
+        pending: "/pending",
+      },
       payer_email: user.email,
     };
 
