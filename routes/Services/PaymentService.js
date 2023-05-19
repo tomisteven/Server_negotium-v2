@@ -24,11 +24,30 @@ class PaymentService {
   async createSubscription(req, res, User) {
     const url = "https://api.mercadopago.com/preapproval";
 
+
+
+
+
     const { id_token } = req.params;
     const users = await User.find();
     const user = users.find((user) => user._id == id_token);
+    const {tipo, price} = req.query
+    console.log(tipo, price, user.email);
+
+    const body = 	{
+      reason: tipo ,
+      auto_recurring: {
+        frequency: 1,
+        frequency_type: "months",
+        transaction_amount: price,
+        currency_id: "ARS"
+      },
+      back_url: "https://www.mercadolibre.com.ar/",
+      payer_email: user.email
+    }
+
     if (user) {
-      const subscription = await axios.post(url, req.body, {
+      const subscription = await axios.post(url, body, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${process.env.ACCESS_TOKEN}`,
