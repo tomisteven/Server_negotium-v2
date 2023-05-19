@@ -23,15 +23,16 @@ const { log } = require("console");
 
 async function update_membresia(req, res) {
   const { user_id } = req.user;
-  const { nombre } = req.body;
+  //const { nombre } = req.body;
+  const {cod} = req.query;
 
   const user = await User.findById(user_id);
   const membresias = user.membresias;
-  const membresia_update = membresias.find((m) => m.nombre === nombre);
+  const membresia_update = membresias.find((m) => m.nombre === cod);
   console.log(membresia_update);
   membresia_update.activa = true;
   membresias.forEach((m) => {
-    if (m.nombre !== nombre) {
+    if (m.nombre !==cod) {
       m.activa = false;
     }
   });
@@ -41,7 +42,7 @@ async function update_membresia(req, res) {
     { membresias: membresias },
     { new: true }
   );
-  res.status(200).send({ membresias: user_update.membresias });
+  user_update ? res.json({back_url : "http://localhost:3000/admin/planes"}) : res.status(404).json({ error: "User not found" });
 }
 
 async function sendMail(req, res) {
