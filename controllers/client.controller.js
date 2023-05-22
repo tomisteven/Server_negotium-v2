@@ -228,7 +228,7 @@ const completeServiceFuture = async (req, res) => {
     (service) => service._id == service_id
   );
   if (!service) res.status(404).json({ message: "No hay servicio con ese id" });
-  service.complete = true;
+  service.completed = true;
   user.recaudado += service.precio;
   client.serviciosadquiridos.push(service);
   client.nextServices = client.nextServices.filter(
