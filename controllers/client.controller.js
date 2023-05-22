@@ -230,6 +230,7 @@ const completeServiceFuture = async (req, res) => {
   if (!service) res.status(404).json({ message: "No hay servicio con ese id" });
   service.completed = true;
   user.recaudado += service.precio;
+  client.gastoTotal += service.precio;
   client.serviciosadquiridos.push(service);
   client.nextServices = client.nextServices.filter(
     (service) => service._id != service_id
@@ -273,13 +274,9 @@ const addService = async (req, res) => {
   response.recaudado += req.body.precio;
   client.serviciosadquiridos.push(req.body);
   response.totalServiciosUsados += 1;
-  //console.log(response);
-  if (!req.body.precio) {
-    res.status(400).json({ message: "El precio es obligatorio" });
-  } else {
-    client.gastoTotal += req.body.precio;
-    response.recaudado += req.body.precio;
-  }
+
+  client.gastoTotal += req.body.precio;
+
   await response.save();
 
   res.status(200).json({ message: "Servicio añadido", client: client });
