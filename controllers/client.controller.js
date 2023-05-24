@@ -296,6 +296,11 @@ const updateClient = async (req, res) => {
     client.email = req.body.email || client.email;
     client.deuda = req.body.deuda || client.deuda;
     client.deudaTotal = req.body.deudaTotal || client.deudaTotal;
+    if (req.body.deudaTotal > 0){
+      client.deuda = true
+      response.deudas += client.deudaTotal
+    }
+    else client.deuda = false;
     client.dni = req.body.dni || client.dni;
     client.direccion = req.body.direccion || client.direccion;
     client.gastoTotal == 0
