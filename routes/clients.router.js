@@ -1,9 +1,3 @@
-/* import { Router } from "express";
-
-import {getAllClients, getClientConDeuda, getClientSinDeuda,createClient, getServicesOfClient, getClient, addServiceFuture,updateClient, deleteClient, deleteServiceClient, addService,deleteServiceFutureClient, updateUsernamePassword, loginClient, getServicesFuturesOfClient, urlLoginClient, clientesConDeudaItem, clientesSinDeudaItem } from "../controllers/client.controller";
-import { asureAuth, tokenClient } from "../middlewares/authenticated";
-import multipart from "connect-multiparty"; */
-
 const Router = require("express");
 const {getAllClients, getClientConDeuda, getClientSinDeuda,createClient, getServicesOfClient, getClient, addServiceFuture,updateClient, deleteClient, deleteServiceClient, addService,deleteServiceFutureClient, updateUsernamePassword, loginClient, getServicesFuturesOfClient, urlLoginClient, clientesConDeudaItem, clientesSinDeudaItem, getClientX, addDeuda, deleteDeuda, completeServiceFuture, allServicesOfAllClients } = require("../controllers/client.controller");
 const { asureAuth, tokenClient } = require("../middlewares/authenticated");

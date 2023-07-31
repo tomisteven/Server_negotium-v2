@@ -1,9 +1,3 @@
-/* import { Router} from "express";
-import {testCloudinary, getNews, deleteNew } from "../controllers/publicaciones.controller";
-import multipart from "connect-multiparty";
-import { asureAuth } from "../middlewares/authenticated";
-import cloudinaryConfig from "../utils/cludinary";
- */
 
 const { Router } = require('express');
 const { createPublicacionAndImage,getNews, deleteNew } = require('../controllers/publicaciones.controller');

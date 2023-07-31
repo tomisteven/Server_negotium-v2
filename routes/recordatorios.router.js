@@ -1,6 +1,4 @@
-/* import { Router } from "express";
-import { asureAuth } from "../middlewares/authenticated";
-import { createRecordatorio, getRecordatorios, updateRecordatorio, deleteRecordatorio } from "../controllers/recordatorios.controller"; */
+
 
 const { Router } = require("express");
 const { asureAuth } = require("../middlewares/authenticated");

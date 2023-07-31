@@ -1,9 +1,4 @@
-/* import { getFiles } from "../utils/images";
-import Router from "express";
-import { createPdf, getPDFs, deletePdf, get} from "../controllers/pdf.controller";
-import { asureAuth } from "../middlewares/authenticated";
-import multipart from "connect-multiparty";
-import cloudinaryConfig from "../utils/cludinary"; */
+
 
 const { getFiles } = require("../utils/images");
 const Router = require("express");

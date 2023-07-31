@@ -1,12 +1,4 @@
-/* import  {Router}  from "express";
-//importamos el controlador
-import {
-    register,
-    login,
-    refreshToken
-} from "../controllers/auth.controller";
-import multipart from "connect-multiparty";
-import configCloudinary from "../utils/cludinary"; */
+
 
 const Router = require("express");
 //importamos el controlador
